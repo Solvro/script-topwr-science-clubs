@@ -1,7 +1,7 @@
 import os
 import sys
 from collections import Counter
-from typing import Iterable, Dict
+from typing import Iterable
 import json
 
 from processing.load_jsonl import load_jsonl
