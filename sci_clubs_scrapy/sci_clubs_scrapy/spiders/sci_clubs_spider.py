@@ -1,23 +1,15 @@
-from enum import Enum
-
 import scrapy
 from itemloaders.processors import MapCompose
 
 from ..extract_href import extract_href
-from ..items import SciClubItemLoader, SciClubItem
+from ..items import SciClubItemLoader, SciClubItem, OrgType
 
 
-class OrgType(Enum):
-    SCI_CLUB = "kola-naukowe"
-    CULTURAL_AGENCY = "agendy-kultury"
-    MEDIA = "media-studenckie"
-    ORGANIZATION = "organizacje-studenckie"
-
-
-class StudentDeptSpider(scrapy.Spider):
+class SciClubsSpider(scrapy.Spider):
     name = "sci_clubs"
     allowed_domains = ["dzialstudencki.pwr.edu.pl"]
-    SCI_CLUB_SECTION_XPATH = "//div[@class='accordion text-content' and count(*)=2 and button[@class='accordion-title'] and div[@class='accordion-text']]"
+    _SCI_CLUB_SECTION_XPATH = ("//div[@class='accordion text-content' and count(*)=2 and button"
+                               "[@class='accordion-title'] and div[@class='accordion-text']]")
     _ROOT = "https://dzialstudencki.pwr.edu.pl/organizacje-studenckie/wykaz-uczelnianych-organizacji-studenckich/"
 
     def _get_detail_request(self, org_type: OrgType):
@@ -44,7 +36,7 @@ class StudentDeptSpider(scrapy.Spider):
             )
 
     def parse_detail_page(self, response, org_type: OrgType, department_name: str = None):
-        for sciClub in response.xpath(self.SCI_CLUB_SECTION_XPATH):
+        for sciClub in response.xpath(self._SCI_CLUB_SECTION_XPATH):
             loader = SciClubItemLoader(item=SciClubItem(), selector=sciClub)
             loader.add_xpath('title', ".//button/text()")
 
