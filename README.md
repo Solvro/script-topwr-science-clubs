@@ -4,5 +4,5 @@
 Usage 
 ```bash
 cd sci_clubs_scrapy
-scrapy crawl sci_clubs -o scis.jsonl
+scrapy crawl sci_clubs -o ../data/sci_clubs_source1.jsonl
 ```
