@@ -35,6 +35,12 @@ class SciClubsSpider(scrapy.Spider):
                 },
             )
 
+    @staticmethod
+    def add_social_link(loader, field, keyword, text):
+        loader.add_xpath(field, f".//div/p/span[contains(., '{text}:')]",
+                         MapCompose(lambda x: extract_href(x, keyword)))  # must be a link
+        loader.add_xpath(field, ".//div/p/span//text()", re=f'{text}:(.*)')  # pure text
+
     def parse_detail_page(self, response, org_type: OrgType, department_name: str = None):
         for sciClub in response.xpath(self._SCI_CLUB_SECTION_XPATH):
             loader = SciClubItemLoader(item=SciClubItem(), selector=sciClub)
@@ -46,33 +52,13 @@ class SciClubsSpider(scrapy.Spider):
             loader.add_xpath('email', ".//div/p/span/text()",
                              re='Adres e-mail:(.*)')  # pure text (always the case I guess)
 
-            loader.add_xpath('facebook', ".//div/p/span[contains(., 'Facebook:')]",
-                             MapCompose(lambda x: extract_href(x, "facebook")))  # must be a link
-            loader.add_xpath('facebook', ".//div/p/span//text()", re='Facebook:(.*)')  # pure text
-
-            loader.add_xpath('linkedin', ".//div/p/span[contains(., 'LinkedIn:')]",
-                             MapCompose(lambda x: extract_href(x, "linkedin")))  # must be a link
-            loader.add_xpath('linkedin', ".//div/p/span//text()", re='LinkedIn:(.*)')  # pure text
-
-            loader.add_xpath('instagram', ".//div/p/span[contains(., 'Instagram:')]",
-                             MapCompose(lambda x: extract_href(x, "instagram")))  # must be a link
-            loader.add_xpath('instagram', ".//div/p/span//text()", re='Instagram:(.*)')  # pure text
-
-            loader.add_xpath('tiktok', ".//div/p/span[contains(., 'Tik-Tok:')]",
-                             MapCompose(lambda x: extract_href(x, "tiktok")))  # must be a link
-            loader.add_xpath('tiktok', ".//div/p/span//text()", re='Tik-Tok:(.*)')  # pure text
-
-            loader.add_xpath('website', ".//div/p/span[contains(., 'Strona internetowa:')]",
-                             MapCompose(extract_href))  # must be a link
-            loader.add_xpath('website', ".//div/p/span//text()", re='Strona internetowa:(.*)')  # pure text
-
-            loader.add_xpath('website', ".//div/p/span[contains(., 'Strona:')]",
-                             MapCompose(extract_href))  # must be a link
-            loader.add_xpath('website', ".//div/p/span//text()", re='Strona:(.*)')  # pure text
-
-            loader.add_xpath('website', ".//div/p/span[contains(., 'Strona interentowa:')]",
-                             MapCompose(extract_href))  # must be a link
-            loader.add_xpath('website', ".//div/p/span//text()", re='Strona interentowa:(.*)')  # pure text
+            self.add_social_link(loader, 'facebook', 'facebook', "Facebook")
+            self.add_social_link(loader, 'linkedin', 'linkedin', "LinkedIn")
+            self.add_social_link(loader, 'instagram', 'instagram', "Instagram")
+            self.add_social_link(loader, 'tiktok', 'tiktok', "Tik-Tok")
+            self.add_social_link(loader, 'website', '', "Strona internetowa")
+            self.add_social_link(loader, 'website', '', "Strona")
+            self.add_social_link(loader, 'website', '', "Strona .*?")
 
             loader.add_xpath('logotype', ".//div/p/span/img/@src")
             loader.add_xpath('logotype', ".//div/p/img/@src")
