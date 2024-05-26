@@ -47,10 +47,16 @@ class SciClubsSpider(scrapy.Spider):
                              re='Adres e-mail:(.*)')  # pure text (always the case I guess)
 
             loader.add_xpath('facebook', ".//div/p/span[contains(., 'Facebook:')]",
-                             MapCompose(extract_href))  # must be a link
+                             MapCompose(lambda x: extract_href(x, "facebook")))  # must be a link
 
             loader.add_xpath('linkedin', ".//div/p/span[contains(., 'LinkedIn:')]",
-                             MapCompose(extract_href))  # must be a link
+                             MapCompose(lambda x: extract_href(x, "linkedin")))  # must be a link
+
+            loader.add_xpath('instagram', ".//div/p/span[contains(., 'Instagram:')]",
+                             MapCompose(lambda x: extract_href(x, "instagram")))  # must be a link
+
+            loader.add_xpath('tiktok', ".//div/p/span[contains(., 'Tik-Tok:')]",
+                             MapCompose(lambda x: extract_href(x, "tiktok")))  # must be a link
 
             loader.add_xpath('website', ".//div/p/span[contains(., 'Strona internetowa:')]",
                              MapCompose(extract_href))  # must be a link

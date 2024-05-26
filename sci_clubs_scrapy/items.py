@@ -13,6 +13,8 @@ class SciClubItem:
     website: str | None = field(default=None)
     facebook: str | None = field(default=None)
     linkedin: str | None = field(default=None)
+    instagram: str | None = field(default=None)
+    tiktok: str | None = field(default=None)
     logotype: str | None = field(default=None)
     org_type: str | None = field(default=None)
     department_name: str | None = field(default=None)
