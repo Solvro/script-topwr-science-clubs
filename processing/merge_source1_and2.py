@@ -5,7 +5,7 @@ from scrapy.exporters import JsonLinesItemExporter
 
 from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
-from processing.merged_model import SciClubMerged, SourcePriority
+from models.merged_model import SciClubMerged, SourcePriority
 from processing.read_tags import read_tags
 from processing.utils import find_first_element
 
