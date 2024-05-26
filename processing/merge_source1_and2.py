@@ -1,8 +1,7 @@
 import sys
-from typing import Generator
+from typing import Generator, Iterable
 
-from scrapy.exporters import JsonItemExporter
-from scrapy.utils.project import get_project_settings
+from scrapy.exporters import JsonLinesItemExporter
 
 from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
@@ -48,11 +47,11 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
         )
 
 
-def save_merged_sci_clubs(merged_clubs, output_file):
-    with open(output_file, 'wb') as file:
-        exporter = JsonItemExporter(file)
+def save_merged_sci_clubs(merged_clubs_: Iterable[SciClubMerged], output_file_: str) -> None:
+    with open(output_file_, 'wb') as file:
+        exporter = JsonLinesItemExporter(file)
         exporter.start_exporting()
-        for club in merged_clubs:
+        for club in merged_clubs_:
             exporter.export_item(club)
         exporter.finish_exporting()
 
