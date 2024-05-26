@@ -62,6 +62,10 @@ class SciClubsSpider(scrapy.Spider):
                              MapCompose(extract_href))  # must be a link
             loader.add_xpath('website', ".//div/p/span//text()", re='Strona internetowa:(.*)')  # pure text
 
+            loader.add_xpath('website', ".//div/p/span[contains(., 'Strona:')]",
+                             MapCompose(extract_href))  # must be a link
+            loader.add_xpath('website', ".//div/p/span//text()", re='Strona:(.*)')  # pure text
+
             loader.add_xpath('logotype', ".//div/p/span/img/@src")
             loader.add_xpath('logotype', ".//div/p/img/@src")
 
