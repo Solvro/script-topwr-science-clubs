@@ -40,6 +40,13 @@ class SciClubsSpider(scrapy.Spider):
         loader.add_xpath(field, f".//div/p/span[contains(., '{text}:')]",
                          MapCompose(lambda x: extract_href(x, keyword)))  # must be a link
         loader.add_xpath(field, ".//div/p/span//text()", re=f'{text}:(.*)')  # pure text
+        loader.add_value(field, extract_href(loader.selector.get(), keyword))  # any link with keyword
+
+    @staticmethod
+    def add_webpage(loader, field, text):
+        loader.add_xpath(field, f".//div/p/span[contains(., '{text}:')]",
+                         MapCompose(lambda x: extract_href(x, "")))  # must be a link
+        loader.add_xpath(field, ".//div/p/span//text()", re=f'{text}:(.*)')  # pure text
 
     def parse_detail_page(self, response, org_type: OrgType, department_name: str = None):
         for sciClub in response.xpath(self._SCI_CLUB_SECTION_XPATH):
@@ -56,9 +63,9 @@ class SciClubsSpider(scrapy.Spider):
             self.add_social_link(loader, 'linkedin', 'linkedin', "LinkedIn")
             self.add_social_link(loader, 'instagram', 'instagram', "Instagram")
             self.add_social_link(loader, 'tiktok', 'tiktok', "Tik-Tok")
-            self.add_social_link(loader, 'website', '', "Strona internetowa")
-            self.add_social_link(loader, 'website', '', "Strona")
-            self.add_social_link(loader, 'website', '', "Strona .*?")
+            self.add_webpage(loader, 'website', "Strona internetowa")
+            self.add_webpage(loader, 'website', "Strona")
+            self.add_webpage(loader, 'website', "Strona .*?")
 
             loader.add_xpath('logotype', ".//div/p/span/img/@src")
             loader.add_xpath('logotype', ".//div/p/img/@src")
