@@ -1,4 +1,3 @@
-import json
 import sys
 from typing import Generator
 
@@ -9,7 +8,7 @@ from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
 from processing.merged_model import SciClubMerged, SourcePriority
 from processing.read_tags import read_tags
-from processing.utils import find_first_element, get_enum_from_string
+from processing.utils import find_first_element
 
 
 def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict, None, None], tags: set[str]):
