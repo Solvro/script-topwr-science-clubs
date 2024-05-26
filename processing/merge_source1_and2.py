@@ -49,9 +49,6 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
 
 
 def save_merged_sci_clubs(merged_clubs, output_file):
-    # with open(output_file, 'w') as file:
-    #     json.dump([club.__dict__ for club in merged_clubs], file, indent=4)
-    settings = get_project_settings()
     with open(output_file, 'wb') as file:
         exporter = JsonItemExporter(file)
         exporter.start_exporting()
