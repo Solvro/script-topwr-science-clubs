@@ -48,15 +48,19 @@ class SciClubsSpider(scrapy.Spider):
 
             loader.add_xpath('facebook', ".//div/p/span[contains(., 'Facebook:')]",
                              MapCompose(lambda x: extract_href(x, "facebook")))  # must be a link
+            loader.add_xpath('facebook', ".//div/p/span//text()", re='Facebook:(.*)')  # pure text
 
             loader.add_xpath('linkedin', ".//div/p/span[contains(., 'LinkedIn:')]",
                              MapCompose(lambda x: extract_href(x, "linkedin")))  # must be a link
+            loader.add_xpath('linkedin', ".//div/p/span//text()", re='LinkedIn:(.*)')  # pure text
 
             loader.add_xpath('instagram', ".//div/p/span[contains(., 'Instagram:')]",
                              MapCompose(lambda x: extract_href(x, "instagram")))  # must be a link
+            loader.add_xpath('instagram', ".//div/p/span//text()", re='Instagram:(.*)')  # pure text
 
             loader.add_xpath('tiktok', ".//div/p/span[contains(., 'Tik-Tok:')]",
                              MapCompose(lambda x: extract_href(x, "tiktok")))  # must be a link
+            loader.add_xpath('tiktok', ".//div/p/span//text()", re='Tik-Tok:(.*)')  # pure text
 
             loader.add_xpath('website', ".//div/p/span[contains(., 'Strona internetowa:')]",
                              MapCompose(extract_href))  # must be a link
