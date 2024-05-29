@@ -1,3 +1,4 @@
 scrapy==2.11.2
 itemloaders~=1.2.0
 itemadapter~=0.9.0
+directus-python-client==1.0.5
