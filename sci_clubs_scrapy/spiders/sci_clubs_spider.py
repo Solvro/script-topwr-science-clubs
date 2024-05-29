@@ -51,7 +51,7 @@ class SciClubsSpider(scrapy.Spider):
     def parse_detail_page(self, response, org_type: OrgType, department_name: str = None):
         for sciClub in response.xpath(self._SCI_CLUB_SECTION_XPATH):
             loader = SciClubItemLoader(item=SciClubItem(), selector=sciClub)
-            loader.add_xpath('title', ".//button/text()")
+            loader.add_xpath('name', ".//button/text()")
 
             loader.add_xpath('description', ".//div/p[1]//text()")
             loader.add_xpath('description', ".//div/p[2]//text()")
@@ -67,10 +67,10 @@ class SciClubsSpider(scrapy.Spider):
             self.add_webpage(loader, 'website', "Strona")
             self.add_webpage(loader, 'website', "Strona .*?")
 
-            loader.add_xpath('logotype', ".//div/p/span/img/@src")
-            loader.add_xpath('logotype', ".//div/p/img/@src")
+            loader.add_xpath('logo', ".//div/p/span/img/@src")
+            loader.add_xpath('logo', ".//div/p/img/@src")
 
-            loader.add_value('org_type', org_type.value)
+            loader.add_value('type', org_type.value)
             loader.add_value('department_name', department_name)
 
             yield loader.load_item()
