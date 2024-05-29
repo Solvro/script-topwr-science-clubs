@@ -13,10 +13,10 @@ from processing.utils import find_first_element
 def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict, None, None], tags: set[str]):
     source22 = list(source2)
     for sciClub in source1:
-        better_sci_club = find_first_element(source22, lambda x: sciClub.get("title") == x.get("name"))
+        better_sci_club = find_first_element(source22, lambda x: sciClub.get("name") == x.get("name"))
         if better_sci_club:
             yield SciClubMerged(
-                name=better_sci_club.get("name") or sciClub.get("title"),
+                name=better_sci_club.get("name") or sciClub.get("name"),
                 description=merge_description(better_sci_club) or sciClub.get("description"),
                 email=better_sci_club.get("email") or sciClub.get("email"),
                 website=better_sci_club["contact"].get("website") or sciClub.get("website"),
@@ -24,15 +24,16 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
                 linkedin=better_sci_club["contact"].get("linkedin") or sciClub.get("linkedin"),
                 instagram=better_sci_club["contact"].get("instagram") or sciClub.get("instagram"),
                 tiktok=sciClub.get("tiktok"),
-                logo=better_sci_club.get("logoUrl") or sciClub.get("logotype"),
-                type=sciClub.get("org_type"),
+                logo=better_sci_club.get("logoUrl") or sciClub.get("logo"),
+                type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=better_sci_club.get("photos")[0],
                 tags=list(filter(lambda x: x in tags, better_sci_club.get("tags", []))),
-                priority=SourcePriority.good.value
+                priority=SourcePriority.good.value,
+                shortDescription=better_sci_club.get("shortDescription") or sciClub.get("description"),
             )
         yield SciClubMerged(
-            name=sciClub.get("title"),
+            name=sciClub.get("name"),
             description=sciClub.get("description"),
             email=sciClub.get("email"),
             website=sciClub.get("website"),
@@ -40,10 +41,11 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
             linkedin=sciClub.get("linkedin"),
             instagram=sciClub.get("instagram"),
             tiktok=sciClub.get("tiktok"),
-            logo=sciClub.get("logotype"),
+            logo=sciClub.get("logo"),
             department_name=sciClub.get("department_name"),
-            type=sciClub.get("org_type"),
-            priority=SourcePriority.bad.value
+            type=sciClub.get("type"),
+            priority=SourcePriority.bad.value,
+            shortDescription=sciClub.get("description"),
         )
 
 
