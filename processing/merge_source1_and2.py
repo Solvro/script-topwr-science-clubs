@@ -16,7 +16,7 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
         better_sci_club = find_first_element(source22, lambda x: sciClub.get("title") == x.get("name"))
         if better_sci_club:
             yield SciClubMerged(
-                title=better_sci_club.get("name") or sciClub.get("title"),
+                name=better_sci_club.get("name") or sciClub.get("title"),
                 description=merge_description(better_sci_club) or sciClub.get("description"),
                 email=better_sci_club.get("email") or sciClub.get("email"),
                 website=better_sci_club["contact"].get("website") or sciClub.get("website"),
@@ -24,15 +24,15 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
                 linkedin=better_sci_club["contact"].get("linkedin") or sciClub.get("linkedin"),
                 instagram=better_sci_club["contact"].get("instagram") or sciClub.get("instagram"),
                 tiktok=sciClub.get("tiktok"),
-                logotype=better_sci_club.get("logoUrl") or sciClub.get("logotype"),
-                org_type=sciClub.get("org_type"),
+                logo=better_sci_club.get("logoUrl") or sciClub.get("logotype"),
+                type=sciClub.get("org_type"),
                 department_name=sciClub.get("department_name"),
                 cover=better_sci_club.get("photos")[0],
                 tags=list(filter(lambda x: x in tags, better_sci_club.get("tags", []))),
                 priority=SourcePriority.good.value
             )
         yield SciClubMerged(
-            title=sciClub.get("title"),
+            name=sciClub.get("title"),
             description=sciClub.get("description"),
             email=sciClub.get("email"),
             website=sciClub.get("website"),
@@ -40,9 +40,9 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
             linkedin=sciClub.get("linkedin"),
             instagram=sciClub.get("instagram"),
             tiktok=sciClub.get("tiktok"),
-            logotype=sciClub.get("logotype"),
+            logo=sciClub.get("logotype"),
             department_name=sciClub.get("department_name"),
-            org_type=sciClub.get("org_type"),
+            type=sciClub.get("org_type"),
             priority=SourcePriority.bad.value
         )
 
