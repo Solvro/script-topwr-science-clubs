@@ -8,12 +8,16 @@ from processing.merge_description import merge_description
 from models.merged_model import SciClubMerged, SourcePriority
 from processing.read_tags import read_tags
 from processing.utils import find_first_element
+from source2_pull.create_assets_url import create_assets_url, create_assets_url_for_cover
+from source2_pull.fetch_orgs import fetch_orgs
 
 
 def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict, None, None], tags: set[str]):
-    source22 = list(source2)
+    source2_raw_json = list(source2)
+    source2_online_data = fetch_orgs()
     for sciClub in source1:
-        better_sci_club = find_first_element(source22, lambda x: sciClub.get("name") == x.get("name"))
+        better_sci_club = find_first_element(source2_raw_json, lambda x: sciClub.get("name") == x.get("name"))
+        better_sci_club_online = find_first_element(source2_online_data, lambda x: sciClub.get("name") == x.get("name"))
         if better_sci_club:
             yield SciClubMerged(
                 name=better_sci_club.get("name") or sciClub.get("name"),
@@ -24,10 +28,10 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
                 linkedin=better_sci_club["contact"].get("linkedin") or sciClub.get("linkedin"),
                 instagram=better_sci_club["contact"].get("instagram") or sciClub.get("instagram"),
                 tiktok=sciClub.get("tiktok"),
-                logo=better_sci_club.get("logoUrl") or sciClub.get("logo"),
+                logo=create_assets_url(better_sci_club_online.get("logo")) or sciClub.get("logo"),
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
-                cover=better_sci_club.get("photos")[0],
+                cover=create_assets_url_for_cover(better_sci_club_online.get("images")[0]),
                 tags=list(filter(lambda x: x in tags, better_sci_club.get("tags", []))),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription") or sciClub.get("description"),
