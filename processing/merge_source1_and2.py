@@ -3,6 +3,7 @@ from typing import Generator, Iterable
 
 from scrapy.exporters import JsonLinesItemExporter
 
+from processing.detect_missing_matches import detect_missing_matches
 from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
 from models.merged_model import SciClubMerged, SourcePriority
@@ -69,4 +70,7 @@ if __name__ == '__main__':
     output_file = sys.argv[4] if len(sys.argv) > 4 else "../data/merged_sci_clubs.json"
 
     merged_clubs = list(merge_sources(load_jsonl(s1_file), load_jsonl(s2_file), read_tags(tags_file)))
+    if missing := list(detect_missing_matches(merged_clubs, s2_file)):
+        raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
+
     save_merged_sci_clubs(merged_clubs, output_file)
