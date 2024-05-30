@@ -1,5 +1,5 @@
 import json
-from typing import Callable, TypeVar, Generator
+from typing import Callable, Generator, TypeVar
 
 T = TypeVar("T")
 

@@ -5,3 +5,4 @@ directus-sdk-py==1.0.1
 python-dotenv==1.0.1
 requests==2.32.3
 black==24.4.2
+isort==5.13.2

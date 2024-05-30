@@ -3,10 +3,8 @@ from models.org_type import OrgType
 from processing.fix_missing_matches import check_if_names_are_equal
 from processing.merge_description import merge_description
 from processing.utils import find_first_element
-from source2_pull.create_assets_url import (
-    create_assets_url,
-    create_assets_url_for_cover,
-)
+from source2_pull.create_assets_url import (create_assets_url,
+                                            create_assets_url_for_cover)
 
 
 def new_entities(source2_online_data):

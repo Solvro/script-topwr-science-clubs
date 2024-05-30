@@ -3,16 +3,14 @@ from typing import Generator, Iterable
 
 from scrapy.exporters import JsonLinesItemExporter
 
+from models.merged_model import SciClubMerged, SourcePriority
 from processing.add_new_entity import new_entities
 from processing.detect_missing_matches import detect_missing_matches
 from processing.fix_missing_matches import check_if_names_are_equal
 from processing.merge_description import merge_description
-from models.merged_model import SciClubMerged, SourcePriority
 from processing.utils import find_first_element, load_jsonl
-from source2_pull.create_assets_url import (
-    create_assets_url,
-    create_assets_url_for_cover,
-)
+from source2_pull.create_assets_url import (create_assets_url,
+                                            create_assets_url_for_cover)
 from source2_pull.fetch_orgs import fetch_orgs
 
 

@@ -2,8 +2,9 @@ import scrapy
 from itemloaders.processors import MapCompose
 
 from models.org_type import OrgType
+from models.scraped_item import SciClubItem, SciClubItemLoader
+
 from ..extract_href import extract_href
-from models.scraped_item import SciClubItemLoader, SciClubItem
 
 
 class SciClubsSpider(scrapy.Spider):
