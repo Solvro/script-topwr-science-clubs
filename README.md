@@ -4,7 +4,7 @@
 
 This script is a versatile tool designed to scrape data from the official website of the Wrocław University of Science
 and Technology's student department. Additionally, it retrieves data from the API of the student council's website,
-combines this information, and sends it to the Directus platform used by ToPWR.
+combines this information, and sends it to the Directus platform used by [ToPWR](https://github.com/Solvro/mobile-topwr).
 
 
 # Usage
