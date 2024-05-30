@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 
 from models.scraped_item import SciClubItem
@@ -11,7 +11,7 @@ class SourcePriority(Enum):
 
 @dataclass
 class SciClubMerged(SciClubItem):
-    cover: str | None = None
-    priority: int | None = SourcePriority.bad.value
-    shortDescription: str | None = None
-    youtube: str | None = None
+    cover: str | None = field(default=None)
+    priority: int | None = field(default=SourcePriority.bad.value)
+    shortDescription: str | None = field(default=None)
+    youtube: str | None = field(default=None)

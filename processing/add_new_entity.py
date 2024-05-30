@@ -27,6 +27,7 @@ def new_entities(source2_online_data):
             cover=create_assets_url_for_cover(full_data.get("images")[0]),
             priority=SourcePriority.good.value,
             shortDescription=full_data.get("shortDescription"),
+            tiktok=None,
         )
 
 

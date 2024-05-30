@@ -1,3 +1,5 @@
+from typing import Iterator
+
 from directus_push.client import client
 from directus_push.generate_social_links import generate_links
 from directus_push.get_departments import get_departments, get_dept_id
@@ -6,9 +8,9 @@ from models.org_type import OrgType
 from processing.utils import load_jsonl
 
 
-def generate_data(fname):
+def upload_data(data: Iterator[dict]):
     departments = get_departments()
-    for sci_club in load_jsonl(fname):
+    for sci_club in data:
         logo_id = None
         cover_id = None
         dept = None
@@ -44,4 +46,4 @@ def generate_data(fname):
 
 
 if __name__ == "__main__":
-    generate_data("../data/merged_sci_clubs.jsonl")
+    upload_data(load_jsonl("../data/merged_sci_clubs.jsonl"))
