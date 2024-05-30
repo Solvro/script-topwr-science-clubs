@@ -14,3 +14,4 @@ class SciClubMerged(SciClubItem):
     cover: str | None = None
     priority: int | None = SourcePriority.bad.value
     shortDescription: str | None = None
+    youtube: str | None = None
