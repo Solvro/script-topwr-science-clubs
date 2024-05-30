@@ -8,13 +8,12 @@ from processing.fix_missing_matches import check_if_names_are_equal
 from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
 from models.merged_model import SciClubMerged, SourcePriority
-from processing.read_tags import read_tags
 from processing.utils import find_first_element
 from source2_pull.create_assets_url import create_assets_url, create_assets_url_for_cover
 from source2_pull.fetch_orgs import fetch_orgs
 
 
-def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict, None, None], tags: set[str]):
+def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict, None, None]):
     source2_raw_json = list(source2)
     source2_online_data = fetch_orgs()
     for sciClub in source1:
@@ -37,7 +36,6 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=create_assets_url_for_cover(better_sci_club_online.get("images")[0]),
-                tags=list(filter(lambda x: x in tags, map(lambda x: x.lower(), better_sci_club.get("tags", [])))),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription") or sciClub.get("description"),
             )
@@ -70,10 +68,9 @@ def save_merged_sci_clubs(merged_clubs_: Iterable[SciClubMerged], output_file_: 
 if __name__ == '__main__':
     s1_file = sys.argv[1] if len(sys.argv) > 1 else "../data/sci_clubs_source1.jsonl"
     s2_file = sys.argv[2] if len(sys.argv) > 2 else "../data/sci_clubs_source2.jsonl"
-    tags_file = sys.argv[3] if len(sys.argv) > 3 else "../data/tags_source2.json"
-    output_file = sys.argv[4] if len(sys.argv) > 4 else "../data/merged_sci_clubs.json"
+    output_file = sys.argv[3] if len(sys.argv) > 3 else "../data/merged_sci_clubs.json"
 
-    merged_clubs = list(merge_sources(load_jsonl(s1_file), load_jsonl(s2_file), read_tags(tags_file)))
+    merged_clubs = list(merge_sources(load_jsonl(s1_file), load_jsonl(s2_file)))
     if missing := list(detect_missing_matches(merged_clubs, s2_file)):
         raw_source_22 = list(map(lambda x: x["name"], list(load_jsonl(s1_file))))
 

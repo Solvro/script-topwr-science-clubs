@@ -12,6 +12,5 @@ class SourcePriority(Enum):
 @dataclass
 class SciClubMerged(SciClubItem):
     cover: str | None = None
-    tags: list[str] = ()
     priority: int | None = SourcePriority.bad.value
     shortDescription: str | None = None
