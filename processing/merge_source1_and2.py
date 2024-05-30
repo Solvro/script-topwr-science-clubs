@@ -80,7 +80,7 @@ def merge_and_save(s1_data, output_file_) -> list[SciClubMerged]:
     merged_clubs = list(merge_sources(s1_data))
     if missing := list(detect_missing_matches(merged_clubs)):
         raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
-
+    print(len(list(filter(lambda x: x.priority == SourcePriority.good.value, merged_clubs))))
     save_merged_sci_clubs(merged_clubs, output_file_)
     return merged_clubs
 
