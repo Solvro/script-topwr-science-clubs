@@ -9,8 +9,8 @@ from processing.load_jsonl import load_jsonl
 
 def _source_tags_stream(fname: str) -> Iterable[str]:
     for org in load_jsonl(fname):
-        yield org["field"]
-        yield from set(org["tags"])
+        yield org["field"].lower()
+        yield from set(map(lambda x: x.lower(), org["tags"]))
 
 
 def extract_tags(fname: str) -> dict[str, int]:

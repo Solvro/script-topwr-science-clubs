@@ -37,7 +37,7 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=create_assets_url_for_cover(better_sci_club_online.get("images")[0]),
-                tags=list(filter(lambda x: x in tags, better_sci_club.get("tags", []))),
+                tags=list(filter(lambda x: x in tags, map(lambda x: x.lower(), better_sci_club.get("tags", [])))),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription") or sciClub.get("description"),
             )
