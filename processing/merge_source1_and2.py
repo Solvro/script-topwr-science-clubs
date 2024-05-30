@@ -3,6 +3,7 @@ from typing import Generator, Iterable
 
 from scrapy.exporters import JsonLinesItemExporter
 
+from processing.add_new_entity import new_entities
 from processing.detect_missing_matches import detect_missing_matches
 from processing.fix_missing_matches import check_if_names_are_equal
 from processing.load_jsonl import load_jsonl
@@ -51,6 +52,7 @@ def merge_sources(source1: Generator[dict, None, None]):
             priority=SourcePriority.bad.value,
             shortDescription=sciClub.get("description"),
         )
+    yield from new_entities(source2_online_data)
 
 
 def save_merged_sci_clubs(merged_clubs_: Iterable[SciClubMerged], output_file_: str) -> None:
@@ -68,8 +70,6 @@ if __name__ == '__main__':
 
     merged_clubs = list(merge_sources(load_jsonl(s1_file)))
     if missing := list(detect_missing_matches(merged_clubs)):
-        raw_source_22 = list(map(lambda x: x["name"], list(load_jsonl(s1_file))))
-
-        # raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
+        raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
 
     save_merged_sci_clubs(merged_clubs, output_file)
