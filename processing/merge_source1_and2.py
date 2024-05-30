@@ -4,6 +4,7 @@ from typing import Generator, Iterable
 from scrapy.exporters import JsonLinesItemExporter
 
 from processing.detect_missing_matches import detect_missing_matches
+from processing.fix_missing_matches import check_if_names_are_equal
 from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
 from models.merged_model import SciClubMerged, SourcePriority
@@ -17,9 +18,12 @@ def merge_sources(source1: Generator[dict, None, None], source2: Generator[dict,
     source2_raw_json = list(source2)
     source2_online_data = fetch_orgs()
     for sciClub in source1:
-        better_sci_club = find_first_element(source2_raw_json, lambda x: sciClub.get("name") == x.get("name"))
-        better_sci_club_online = find_first_element(source2_online_data, lambda x: sciClub.get("name") == x.get("name"))
+        better_sci_club = find_first_element(source2_raw_json,
+                                             lambda x: check_if_names_are_equal(sciClub.get("name"), x.get("name")))
+
         if better_sci_club:
+            better_sci_club_online = find_first_element(source2_online_data,
+                                                        lambda x: better_sci_club.get("name") == x.get("name"))
             yield SciClubMerged(
                 name=better_sci_club.get("name") or sciClub.get("name"),
                 description=merge_description(better_sci_club) or sciClub.get("description"),
@@ -71,6 +75,8 @@ if __name__ == '__main__':
 
     merged_clubs = list(merge_sources(load_jsonl(s1_file), load_jsonl(s2_file), read_tags(tags_file)))
     if missing := list(detect_missing_matches(merged_clubs, s2_file)):
+        raw_source_22 = list(map(lambda x: x["name"], list(load_jsonl(s1_file))))
+
         raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
 
     save_merged_sci_clubs(merged_clubs, output_file)
