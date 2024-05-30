@@ -2,7 +2,7 @@ import sys
 from dataclasses import asdict
 
 from directus_push.upload_data import upload_data
-from my_spider_runner import MySpiderRunner
+from processing.my_spider_runner import MySpiderRunner
 from processing.merge_source1_and2 import merge_and_save
 
 if __name__ == '__main__':
