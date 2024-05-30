@@ -1,8 +1,9 @@
 import scrapy
 from itemloaders.processors import MapCompose
 
+from models.org_type import OrgType
 from ..extract_href import extract_href
-from models.scraped_item import SciClubItemLoader, SciClubItem, OrgType
+from models.scraped_item import SciClubItemLoader, SciClubItem
 
 
 class SciClubsSpider(scrapy.Spider):
@@ -13,11 +14,11 @@ class SciClubsSpider(scrapy.Spider):
     _ROOT = "https://dzialstudencki.pwr.edu.pl/organizacje-studenckie/wykaz-uczelnianych-organizacji-studenckich/"
 
     def _get_detail_request(self, org_type: OrgType):
-        return scrapy.Request(self._ROOT + org_type.value, self.parse_detail_page,
+        return scrapy.Request(self._ROOT + org_type.value[0], self.parse_detail_page,
                               cb_kwargs={"org_type": org_type})
 
     def start_requests(self):
-        yield scrapy.Request(self._ROOT + OrgType.SCI_CLUB.value)
+        yield scrapy.Request(self._ROOT + OrgType.SCI_CLUB.value[0])
         yield self._get_detail_request(OrgType.CULTURAL_AGENCY)
         yield self._get_detail_request(OrgType.MEDIA)
         yield self._get_detail_request(OrgType.ORGANIZATION)
@@ -70,7 +71,7 @@ class SciClubsSpider(scrapy.Spider):
             loader.add_xpath('logo', ".//div/p/span/img/@src")
             loader.add_xpath('logo', ".//div/p/img/@src")
 
-            loader.add_value('type', org_type.value)
+            loader.add_value('type', org_type.value[0])
             loader.add_value('department_name', department_name)
 
             yield loader.load_item()

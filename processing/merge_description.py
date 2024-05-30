@@ -3,10 +3,10 @@ from typing import Any
 
 
 class _Config(ABC):
-    title1 = "📰 Kim jesteśmy, co robimy 📰"
-    title2 = "🔥 Zdobywane umiejętności i wyzwania członków zespołu! 🔥"
-    title3 = "🏆 Największe sukcesy uczelnianej organizacji studenckiej! 🏆"
-    title4 = "🌟 Czym się interesujemy? 🌟"
+    title1 = "<h1>📰 Kim jesteśmy, co robimy 📰</h1>\n"
+    title2 = "<h1>🔥 Zdobywane umiejętności i wyzwania członków zespołu! 🔥</h1>\n"
+    title3 = "<h1>🏆 Największe sukcesy uczelnianej organizacji studenckiej! 🏆</h1>\n"
+    title4 = "<h1>🌟 Czym się interesujemy? 🌟</h1>\n"
 
 
 def merge_description(data_source2: dict[str, Any]) -> str:

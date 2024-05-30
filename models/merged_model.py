@@ -5,8 +5,8 @@ from models.scraped_item import SciClubItem
 
 
 class SourcePriority(Enum):
-    bad = 0
-    good = 1
+    bad = "student_department"
+    good = "aktywni_website"
 
 
 @dataclass

@@ -6,10 +6,9 @@ from scrapy.exporters import JsonLinesItemExporter
 from processing.add_new_entity import new_entities
 from processing.detect_missing_matches import detect_missing_matches
 from processing.fix_missing_matches import check_if_names_are_equal
-from processing.load_jsonl import load_jsonl
 from processing.merge_description import merge_description
 from models.merged_model import SciClubMerged, SourcePriority
-from processing.utils import find_first_element
+from processing.utils import find_first_element, load_jsonl
 from source2_pull.create_assets_url import create_assets_url, create_assets_url_for_cover
 from source2_pull.fetch_orgs import fetch_orgs
 
@@ -37,21 +36,22 @@ def merge_sources(source1: Generator[dict, None, None]):
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription") or sciClub.get("description"),
             )
-        yield SciClubMerged(
-            name=sciClub.get("name"),
-            description=sciClub.get("description"),
-            email=sciClub.get("email"),
-            website=sciClub.get("website"),
-            facebook=sciClub.get("facebook"),
-            linkedin=sciClub.get("linkedin"),
-            instagram=sciClub.get("instagram"),
-            tiktok=sciClub.get("tiktok"),
-            logo=sciClub.get("logo"),
-            department_name=sciClub.get("department_name"),
-            type=sciClub.get("type"),
-            priority=SourcePriority.bad.value,
-            shortDescription=sciClub.get("description"),
-        )
+        else:
+            yield SciClubMerged(
+                name=sciClub.get("name"),
+                description=sciClub.get("description"),
+                email="mailto:" + email if (email := sciClub.get("email")) else None,
+                website=sciClub.get("website"),
+                facebook=sciClub.get("facebook"),
+                linkedin=sciClub.get("linkedin"),
+                instagram=sciClub.get("instagram"),
+                tiktok=sciClub.get("tiktok"),
+                logo=sciClub.get("logo"),
+                department_name=sciClub.get("department_name"),
+                type=sciClub.get("type"),
+                priority=SourcePriority.bad.value,
+                shortDescription=sciClub.get("description"),
+            )
     yield from new_entities(source2_online_data)
 
 

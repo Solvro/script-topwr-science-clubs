@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from enum import Enum
 
 from itemloaders import ItemLoader
 from itemloaders.processors import MapCompose, TakeFirst
@@ -18,13 +17,6 @@ class SciClubItem:
     logo: str | None = field(default=None)
     type: str | None = field(default=None)
     department_name: str | None = field(default=None)
-
-
-class OrgType(Enum):
-    SCI_CLUB = "kola-naukowe"
-    CULTURAL_AGENCY = "agendy-kultury"
-    MEDIA = "media-studenckie"
-    ORGANIZATION = "organizacje-studenckie"
 
 
 class SciClubItemLoader(ItemLoader):
