@@ -9,8 +9,10 @@ from processing.detect_missing_matches import detect_missing_matches
 from processing.fix_missing_matches import check_if_names_are_equal
 from processing.merge_description import merge_description
 from processing.utils import find_first_element, load_jsonl
-from source2_pull.create_assets_url import (create_assets_url,
-                                            create_assets_url_for_cover)
+from source2_pull.create_assets_url import (
+    create_assets_url,
+    create_assets_url_for_cover,
+)
 from source2_pull.fetch_orgs import fetch_orgs
 
 
@@ -25,7 +27,7 @@ def merge_sources(source1: Generator[dict, None, None]):
             yield SciClubMerged(
                 name=better_sci_club.get("name") or sciClub.get("name"),
                 description=merge_description(better_sci_club)
-                            or sciClub.get("description"),
+                or sciClub.get("description"),
                 email=better_sci_club.get("email") or sciClub.get("email"),
                 website=better_sci_club.get("website") or sciClub.get("website"),
                 facebook=better_sci_club.get("facebook") or sciClub.get("facebook"),
@@ -34,13 +36,13 @@ def merge_sources(source1: Generator[dict, None, None]):
                 youtube=better_sci_club.get("youtube"),
                 tiktok=sciClub.get("tiktok"),
                 logo=create_assets_url(better_sci_club.get("logo"))
-                     or sciClub.get("logo"),
+                or sciClub.get("logo"),
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=create_assets_url_for_cover(better_sci_club.get("images")[0]),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription")
-                                 or sciClub.get("description"),
+                or sciClub.get("description"),
             )
         else:
             yield SciClubMerged(
@@ -64,7 +66,7 @@ def merge_sources(source1: Generator[dict, None, None]):
 
 
 def save_merged_sci_clubs(
-        merged_clubs_: Iterable[SciClubMerged], output_file_: str
+    merged_clubs_: Iterable[SciClubMerged], output_file_: str
 ) -> None:
     with open(output_file_, "wb") as file:
         exporter = JsonLinesItemExporter(file)
