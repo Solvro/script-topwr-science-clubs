@@ -13,25 +13,32 @@ def generate_data(fname):
         cover_id = None
         dept = None
         if logo := sci_club["logo"]:
-            logo_id = import_file(logo, "9a0284ee-d311-4878-8e1b-ed72031fac93", sci_club["name"] + "_logo")["data"][
-                "id"]
+            logo_id = import_file(
+                logo, "9a0284ee-d311-4878-8e1b-ed72031fac93", sci_club["name"] + "_logo"
+            )["data"]["id"]
         if cover := sci_club["cover"]:
-            cover_id = import_file(cover, "9a0284ee-d311-4878-8e1b-ed72031fac93", sci_club["name"] + "_cover")["data"][
-                "id"]
+            cover_id = import_file(
+                cover,
+                "9a0284ee-d311-4878-8e1b-ed72031fac93",
+                sci_club["name"] + "_cover",
+            )["data"]["id"]
         if sci_club["department_name"]:
             dept = get_dept_id(sci_club["department_name"], departments)
 
-        circle_id = client.create_item("Scientific_Circles", {
-            "name": sci_club["name"],
-            "description": sci_club["description"],
-            "shortDescription": sci_club["shortDescription"],
-            "source": sci_club["priority"],
-            "type": OrgType.from_string(sci_club["type"]).value[1],
-            "logo": logo_id,
-            "cover": cover_id,
-            "department": dept,
-            "links": generate_links(sci_club)
-        })["data"]["id"]
+        circle_id = client.create_item(
+            "Scientific_Circles",
+            {
+                "name": sci_club["name"],
+                "description": sci_club["description"],
+                "shortDescription": sci_club["shortDescription"],
+                "source": sci_club["priority"],
+                "type": OrgType.from_string(sci_club["type"]).value[1],
+                "logo": logo_id,
+                "cover": cover_id,
+                "department": dept,
+                "links": generate_links(sci_club),
+            },
+        )["data"]["id"]
 
         print(circle_id)
 

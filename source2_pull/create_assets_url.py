@@ -12,5 +12,7 @@ def create_assets_url(file_hash: str | None) -> str | None:
 def create_assets_url_for_cover(id_: int | None) -> str | None:
     if id_ is None:
         return None
-    file_hash = requests.get(client.url + "/items/Organizacje_files/" + str(id_)).json()["data"]
+    file_hash = requests.get(
+        client.url + "/items/Organizacje_files/" + str(id_)
+    ).json()["data"]
     return create_assets_url(file_hash["directus_files_id"])
