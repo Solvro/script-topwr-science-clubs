@@ -16,6 +16,10 @@ from source2_pull.create_assets_url import (
 from source2_pull.fetch_orgs import fetch_orgs
 
 
+def format_email(email: str) -> str | None:
+    return "mailto:" + email if email else None
+
+
 def merge_sources(source1: Generator[dict, None, None]):
     source2_online_data = fetch_orgs()
     for sciClub in source1:
@@ -27,8 +31,8 @@ def merge_sources(source1: Generator[dict, None, None]):
             yield SciClubMerged(
                 name=better_sci_club.get("name") or sciClub.get("name"),
                 description=merge_description(better_sci_club)
-                or sciClub.get("description"),
-                email=better_sci_club.get("email") or sciClub.get("email"),
+                            or sciClub.get("description"),
+                email=format_email(better_sci_club.get("email") or sciClub.get("email")),
                 website=better_sci_club.get("website") or sciClub.get("website"),
                 facebook=better_sci_club.get("facebook") or sciClub.get("facebook"),
                 linkedin=better_sci_club.get("linkedin") or sciClub.get("linkedin"),
@@ -36,19 +40,19 @@ def merge_sources(source1: Generator[dict, None, None]):
                 youtube=better_sci_club.get("youtube"),
                 tiktok=sciClub.get("tiktok"),
                 logo=create_assets_url(better_sci_club.get("logo"))
-                or sciClub.get("logo"),
+                     or sciClub.get("logo"),
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=create_assets_url_for_cover(better_sci_club.get("images")[0]),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription")
-                or sciClub.get("description"),
+                                 or sciClub.get("description"),
             )
         else:
             yield SciClubMerged(
                 name=sciClub.get("name"),
                 description=sciClub.get("description"),
-                email="mailto:" + email if (email := sciClub.get("email")) else None,
+                email=format_email(sciClub.get("email")),
                 website=sciClub.get("website"),
                 facebook=sciClub.get("facebook"),
                 linkedin=sciClub.get("linkedin"),
@@ -66,7 +70,7 @@ def merge_sources(source1: Generator[dict, None, None]):
 
 
 def save_merged_sci_clubs(
-    merged_clubs_: Iterable[SciClubMerged], output_file_: str
+        merged_clubs_: Iterable[SciClubMerged], output_file_: str
 ) -> None:
     with open(output_file_, "wb") as file:
         exporter = JsonLinesItemExporter(file)
