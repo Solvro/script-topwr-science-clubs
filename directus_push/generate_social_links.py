@@ -1,5 +1,5 @@
 def generate_links(data):
-    platforms = ["facebook", "linkedin", "instagram", "tiktok", "youtube"]
+    platforms = ["mail", "facebook", "linkedin", "instagram", "tiktok", "youtube"]
     return [
         {
             "name": data[platform]
