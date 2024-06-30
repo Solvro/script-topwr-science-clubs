@@ -1,6 +1,6 @@
 # ToPWR Science Clubs Script/Scraper
 
-![333665281-1da32ff9-341c-4e9b-b446-e875601cb7e9](https://github.com/Solvro/script-topwr-science-clubs/assets/28555148/822d27f0-93e0-44f8-9004-f37577a93d9a)
+![KN Solvro banner](https://github.com/Solvro/script-topwr-science-clubs/assets/28555148/822d27f0-93e0-44f8-9004-f37577a93d9a)
 
 
 This script is a versatile tool designed to scrape data from the official website of the Wrocław University of Science
