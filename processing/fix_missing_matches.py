@@ -3,7 +3,10 @@ def custom_in(value, l1):
 
 
 def check_if_names_are_equal(name_source1, name_source2):
-    if SCI_CLUBS_NAMES_ALIASES.get(name_source2.lower().strip(), None) == name_source1.lower():
+    if (
+        SCI_CLUBS_NAMES_ALIASES.get(name_source2.lower().strip(), None)
+        == name_source1.lower()
+    ):
         return True
 
     def remove_substrings(string):

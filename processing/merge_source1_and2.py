@@ -31,8 +31,10 @@ def merge_sources(source1: Generator[dict, None, None]):
             yield SciClubMerged(
                 name=better_sci_club.get("name") or sciClub.get("name"),
                 description=merge_description(better_sci_club)
-                            or sciClub.get("description"),
-                email=format_email(better_sci_club.get("email") or sciClub.get("email")),
+                or sciClub.get("description"),
+                email=format_email(
+                    better_sci_club.get("email") or sciClub.get("email")
+                ),
                 website=better_sci_club.get("website") or sciClub.get("website"),
                 facebook=better_sci_club.get("facebook") or sciClub.get("facebook"),
                 linkedin=better_sci_club.get("linkedin") or sciClub.get("linkedin"),
@@ -40,13 +42,13 @@ def merge_sources(source1: Generator[dict, None, None]):
                 youtube=better_sci_club.get("youtube"),
                 tiktok=sciClub.get("tiktok"),
                 logo=create_assets_url(better_sci_club.get("logo"))
-                     or sciClub.get("logo"),
+                or sciClub.get("logo"),
                 type=sciClub.get("type"),
                 department_name=sciClub.get("department_name"),
                 cover=create_assets_url_for_cover(better_sci_club.get("images")[0]),
                 priority=SourcePriority.good.value,
                 shortDescription=better_sci_club.get("shortDescription")
-                                 or sciClub.get("description"),
+                or sciClub.get("description"),
             )
         else:
             yield SciClubMerged(
@@ -70,7 +72,7 @@ def merge_sources(source1: Generator[dict, None, None]):
 
 
 def save_merged_sci_clubs(
-        merged_clubs_: Iterable[SciClubMerged], output_file_: str
+    merged_clubs_: Iterable[SciClubMerged], output_file_: str
 ) -> None:
     with open(output_file_, "wb") as file:
         exporter = JsonLinesItemExporter(file)
@@ -84,7 +86,13 @@ def merge_and_save(s1_data, output_file_) -> list[SciClubMerged]:
     merged_clubs = list(merge_sources(s1_data))
     if missing := list(detect_missing_matches(merged_clubs)):
         raise Exception("Missing sci clubs matches (mismatched names):" + str(missing))
-    print(len(list(filter(lambda x: x.priority == SourcePriority.good.value, merged_clubs))))
+    print(
+        len(
+            list(
+                filter(lambda x: x.priority == SourcePriority.good.value, merged_clubs)
+            )
+        )
+    )
     save_merged_sci_clubs(merged_clubs, output_file_)
     return merged_clubs
 
