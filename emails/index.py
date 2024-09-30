@@ -7,7 +7,7 @@ from emails.send_email import send_bulk_emails
 from dotenv import load_dotenv
 
 load_dotenv()
-file_path = "../data/test.csv"
+file_path = "../data/wydz.csv"
 
 if __name__ == "__main__":
     with open(file_path, newline="") as csvfile:
@@ -28,11 +28,14 @@ if __name__ == "__main__":
             "https://formularz.solvro.pl/",
         )] for row in rows if "@" in row[1]]
 
-        send_bulk_emails(
-            SUBJECT,
-            get_template,
-            SENDER,
-            [row[1] for row in withs_email],
-            os.getenv("GMAIL_PASS"),
-             [row[2] for row in withs_email],
-        )
+        for row in withs_email:
+            print(row)
+
+        # send_bulk_emails(
+        #     SUBJECT,
+        #     get_template,
+        #     SENDER,
+        #     [row[1] for row in withs_email],
+        #     os.getenv("GMAIL_PASS"),
+        #     [row[2] for row in withs_email],
+        # )
