@@ -7,7 +7,7 @@ from emails.send_email import send_bulk_emails
 from dotenv import load_dotenv
 
 load_dotenv()
-file_path = "../data/maile_wiosna_2025.csv"
+file_path = "../data/wiosna_maile_followups.csv"
 
 if __name__ == "__main__":
     with open(file_path, newline="") as csvfile:
@@ -31,11 +31,11 @@ if __name__ == "__main__":
         for row in withs_email:
             print(row)
 
-        send_bulk_emails(
-            SUBJECT,
-            get_template,
-            SENDER,
-            [row[1] for row in withs_email],
-            os.getenv("GMAIL_PASS"),
-            [row[2] for row in withs_email],
-        )
+        # send_bulk_emails(
+        #     SUBJECT,
+        #     get_template,
+        #     SENDER,
+        #     [row[1] for row in withs_email],
+        #     os.getenv("GMAIL_PASS"),
+        #     [row[2] for row in withs_email],
+        # )
