@@ -7,7 +7,7 @@ from emails.send_email import send_bulk_emails
 from dotenv import load_dotenv
 
 load_dotenv()
-file_path = "../data/maile_wiosna_2025_test.csv"
+file_path = "../data/maile_wiosna_2025.csv"
 
 if __name__ == "__main__":
     with open(file_path, newline="") as csvfile:
